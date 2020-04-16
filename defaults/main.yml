@@ -4,3 +4,4 @@ proxy:
   port: 3128
 
 setup_yarn: false
+setup_git: true
