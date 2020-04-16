@@ -102,7 +102,7 @@
   git_config:
     name: https.proxy
     scope: global
-    value: "https://{{ proxy.addr }}:{{ proxy.port }}"
+    value: "http://{{ proxy.addr }}:{{ proxy.port }}"
   when: setup_git
 
 - name: Set git to https
