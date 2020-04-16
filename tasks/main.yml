@@ -115,11 +115,13 @@
 - name: Ensure yarn is installed
   command: which yarn
   register: yarn_check
-  when: true # always
+  when: setup_yarn
 
 - name: Add proxy to yarn when it is installed
   command: yarn config set {{ item.opt }} http://{{ proxy.addr }}:{{ proxy.port }}
   with_items:
     - { opt: proxy }
     - { opt: https-proxy }
-  when: yarn_check.stdout.find('yarn') != -1
+  when:
+    - setup_yarn
+    - yarn_check.stdout.find('yarn') != -1
