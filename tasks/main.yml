@@ -76,7 +76,7 @@
   with_items:
     - Acquire::http::proxy "http://{{ proxy.addr }}:{{ proxy.port }}/"
     - Acquire::ftp::proxy "ftp://{{ proxy.addr }}:{{ proxy.port }}/"
-    - Acquire::https::proxy "https://{{ proxy.addr }}:{{ proxy.port }}/"
+    - Acquire::https::proxy "http://{{ proxy.addr }}:{{ proxy.port }}/"
 
 - name: Update /etc/apt/apt.conf.d/80proxy
   blockinfile:
