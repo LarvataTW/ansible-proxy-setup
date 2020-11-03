@@ -5,3 +5,4 @@ proxy:
 
 setup_yarn: false
 setup_git: true
+setup_docker: true

@@ -8,6 +8,7 @@
 #
 # /etc/environment
 #
+
 - name: Create the environment block
   set_fact:
     b1: "{{ b1 }} + ['{{ item }}=http://{{ proxy.addr }}:{{ proxy.port }}/']"
@@ -114,6 +115,7 @@
 #
 # yarn
 #
+
 - name: Ensure yarn is installed
   command: which yarn
   register: yarn_check
@@ -127,3 +129,34 @@
   when:
     - setup_yarn
     - yarn_check.stdout.find('yarn') != -1
+
+#
+# docker
+#
+
+- name: Setup Proxy for Docker Service
+  block:
+
+    - name: create docker dropin directory
+      file:
+        path: "/etc/systemd/system/docker.service.d"
+        state: "directory"
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: add docker systemd dropin for proxy
+      template:
+        src: "docker.proxy.conf.j2"
+        dest: "/etc/systemd/system/docker.service.d/proxy.conf"
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: check if proxy setup for docker service
+      raw: "systemctl show --property=Environment docker"
+
+  become: true
+  notify: reload systemd docker
+  when:
+    - setup_docker
