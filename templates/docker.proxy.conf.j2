@@ -1,4 +1,4 @@
 [Service]
 Environment="HTTP_PROXY=http://{{ proxy.address }}:{{ proxy.port }}"
 Environment="HTTPS_PROXY=http://{{ proxy.address }}:{{ proxy.port }}"
-Environment="NO_PROXY={{ no_proxy | array_to_string }}"
+Environment="NO_PROXY={{ no_proxy | join(',') }}"

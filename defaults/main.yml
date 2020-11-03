@@ -3,6 +3,12 @@ proxy:
   address: ""
   port: 3128
 
+no_proxy:
+  - localhost
+  - 127.0.0.1
+  - localaddress
+  - .localdomain.com
+
 setup_yarn: false
 setup_git: true
 setup_docker: true

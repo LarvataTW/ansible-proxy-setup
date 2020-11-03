@@ -22,10 +22,13 @@
 
 - name: Append to the environment block
   set_fact:
-    b1: '{{ b1 }} + [''{{ item }}="localhost,127.0.0.1,localaddress,.localdomain.com"'']'
+    b1: "{{ b1 }} + [{{ item }}={{ no_proxy | join(',') }}]"
   with_items:
     - no_proxy
     - NO_PROXY
+
+- debug:
+    msg: "{{ b1 }}"
 
 - name: Update /etc/environment
   blockinfile:
