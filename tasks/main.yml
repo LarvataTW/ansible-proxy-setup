@@ -5,6 +5,10 @@
     b2: []
     b3: []
 
+- name: Set no_proxy
+  set_fact:
+    no_proxy: "{{ no_proxy | join(',') }}"
+
 #
 # /etc/environment
 #
@@ -22,7 +26,7 @@
 
 - name: Append to the environment block
   set_fact:
-    b1: "{{ b1 }} + [{{ item }}={{ no_proxy | join(',') }}]"
+    b1: "{{ b1 }} + ['{{ item }}={{ no_proxy }}']"
   with_items:
     - no_proxy
     - NO_PROXY
