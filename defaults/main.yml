@@ -1,6 +1,6 @@
 ---
 proxy:
-  address: ""
+  address: "http://your.proxy.server"
   port: 3128
 
 no_proxy:

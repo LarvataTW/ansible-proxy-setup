@@ -11,7 +11,7 @@
 
 - name: Create the environment block
   set_fact:
-    b1: "{{ b1 }} + ['{{ item }}=http://{{ proxy.addr }}:{{ proxy.port }}/']"
+    b1: "{{ b1 }} + ['{{ item }}=http://{{ proxy.address }}:{{ proxy.port }}/']"
   with_items:
     - http_proxy
     - https_proxy
@@ -78,9 +78,9 @@
   set_fact:
     b3: "{{ b3 }} + ['{{ item }};']"
   with_items:
-    - Acquire::http::proxy "http://{{ proxy.addr }}:{{ proxy.port }}/"
-    - Acquire::ftp::proxy "ftp://{{ proxy.addr }}:{{ proxy.port }}/"
-    - Acquire::https::proxy "http://{{ proxy.addr }}:{{ proxy.port }}/"
+    - Acquire::http::proxy "http://{{ proxy.address }}:{{ proxy.port }}/"
+    - Acquire::ftp::proxy "ftp://{{ proxy.address }}:{{ proxy.port }}/"
+    - Acquire::https::proxy "http://{{ proxy.address }}:{{ proxy.port }}/"
 
 - name: Update /etc/apt/apt.conf.d/80proxy
   blockinfile:
@@ -99,14 +99,14 @@
   git_config:
     name: http.proxy
     scope: global
-    value: "http://{{ proxy.addr }}:{{ proxy.port }}"
+    value: "http://{{ proxy.address }}:{{ proxy.port }}"
   when: setup_git
 
 - name: Add https proxy to git config
   git_config:
     name: https.proxy
     scope: global
-    value: "http://{{ proxy.addr }}:{{ proxy.port }}"
+    value: "http://{{ proxy.address }}:{{ proxy.port }}"
   when: setup_git
 
 - name: Set git to https
@@ -125,7 +125,7 @@
   when: setup_yarn
 
 - name: Add proxy to yarn when it is installed
-  command: yarn config set {{ item.opt }} http://{{ proxy.addr }}:{{ proxy.port }}
+  command: yarn config set {{ item.opt }} http://{{ proxy.address }}:{{ proxy.port }}
   with_items:
     - { opt: proxy }
     - { opt: https-proxy }
