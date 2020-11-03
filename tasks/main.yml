@@ -155,11 +155,11 @@
         mode: 0644
         owner: root
         group: root
+      notify: reload systemd docker
 
     - name: check if proxy setup for docker service
       raw: "systemctl show --property=Environment docker"
 
   become: true
-  notify: reload systemd docker
   when:
     - setup_docker
