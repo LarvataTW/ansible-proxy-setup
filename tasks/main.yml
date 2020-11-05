@@ -57,7 +57,7 @@
 
 - name: Create the profile block
   set_fact:
-    b2: "{{ b2 }} + ['export {{ item.opt }}={{ item.prot }}://{{ proxy.addr }}:{{ proxy.port }}/']"
+    b2: "{{ b2 }} + ['export {{ item.opt }}={{ item.prot }}://{{ proxy.address }}:{{ proxy.port }}/']"
   with_items:
     - { opt: http_proxy, prot: http }
     - { opt: https_proxy, prot: http }
