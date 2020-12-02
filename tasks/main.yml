@@ -162,7 +162,7 @@
       notify: reload systemd docker
 
     - name: check if proxy setup for docker service
-      raw: "systemctl show --property=Environment docker"
+      shell: "systemctl show --property=Environment docker"
 
   become: true
   when:
