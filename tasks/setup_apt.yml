@@ -1,0 +1,21 @@
+---
+- name: Blank arrays
+  set_fact:
+    b3: []
+
+- name: Create the apt.conf block
+  set_fact:
+    b3: "{{ b3 }} + ['{{ item }};']"
+  with_items:
+    - Acquire::http::proxy "http://{{ proxy.address }}:{{ proxy.port }}/"
+    - Acquire::ftp::proxy "ftp://{{ proxy.address }}:{{ proxy.port }}/"
+    - Acquire::https::proxy "http://{{ proxy.address }}:{{ proxy.port }}/"
+
+- name: Update /etc/apt/apt.conf.d/80proxy
+  blockinfile:
+    dest: /etc/apt/apt.conf.d/80proxy
+    block: "{{ b3 | join('\n') }}"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - PROXY"
+    create: true
+  become: true

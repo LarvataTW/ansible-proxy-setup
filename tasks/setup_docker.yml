@@ -1,0 +1,28 @@
+---
+
+- name: Setup Proxy for Docker Service
+  block:
+
+    - name: create docker dropin directory
+      file:
+        path: "/etc/systemd/system/docker.service.d"
+        state: "directory"
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: add docker systemd dropin for proxy
+      template:
+        src: "docker.proxy.conf.j2"
+        dest: "/etc/systemd/system/docker.service.d/proxy.conf"
+        mode: 0644
+        owner: root
+        group: root
+      notify: reload systemd docker
+
+    - name: check if proxy setup for docker service
+      shell: "systemctl show --property=Environment docker"
+
+  become: true
+  when:
+    - setup_docker
