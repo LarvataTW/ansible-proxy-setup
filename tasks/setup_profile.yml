@@ -1,7 +1,8 @@
 ---
-- name: Blank arrays
+
+- name: Set facts for profile proxy
   set_fact:
-    b2: []
+    profile_proxy: []
 
 - name: Ensure /etc/profile.d/proxy.sh exists
   file:
@@ -14,7 +15,7 @@
 
 - name: Create the profile block
   set_fact:
-    b2: "{{ b2 }} + ['export {{ item.opt }}={{ item.prot }}://{{ proxy.address }}:{{ proxy.port }}/']"
+    profile_proxy: "{{ profile_proxy }} + ['export {{ item.opt }}={{ item.prot }}://{{ proxy.address }}:{{ proxy.port }}/']"
   with_items:
     - { opt: http_proxy, prot: http }
     - { opt: https_proxy, prot: http }
@@ -26,7 +27,7 @@
 - name: Update /etc/profile.d/proxy.sh
   blockinfile:
     dest: /etc/profile.d/proxy.sh
-    block: "{{ b2 | join('\n') }}"
+    block: "{{ profile_proxy | join('\n') }}"
     insertafter: EOF
     marker: "# {mark} ANSIBLE MANAGED BLOCK - PROXY"
   become: true

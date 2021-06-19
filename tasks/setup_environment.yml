@@ -1,15 +1,13 @@
 ---
-- name: Blank arrays
-  set_fact:
-    b1: []
 
-- name: Set no_proxy
+- name: Set facts for environment proxy
   set_fact:
+    env_proxy: []
     no_proxy: "{{ no_proxy | join(',') }}"
 
 - name: Create the environment block
   set_fact:
-    b1: "{{ b1 }} + ['{{ item }}=http://{{ proxy.address }}:{{ proxy.port }}/']"
+    env_proxy: "{{ env_proxy }} + ['{{ item }}=http://{{ proxy.address }}:{{ proxy.port }}/']"
   with_items:
     - http_proxy
     - https_proxy
@@ -20,18 +18,15 @@
 
 - name: Append to the environment block
   set_fact:
-    b1: "{{ b1 }} + ['{{ item }}={{ no_proxy }}']"
+    env_proxy: "{{ env_proxy }} + ['{{ item }}={{ no_proxy }}']"
   with_items:
     - no_proxy
     - NO_PROXY
 
-- debug:
-    msg: "{{ b1 }}"
-
 - name: Update /etc/environment
   blockinfile:
     dest: /etc/environment
-    block: "{{ b1 | join('\n') }}"
+    block: "{{ env_proxy | join('\n') }}"
     insertafter: EOF
     marker: "# {mark} ANSIBLE MANAGED BLOCK - PROXY"
   become: true

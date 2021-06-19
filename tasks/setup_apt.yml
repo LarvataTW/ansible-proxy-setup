@@ -1,11 +1,12 @@
 ---
-- name: Blank arrays
+
+- name: Set facts for apt proxy
   set_fact:
-    b3: []
+    apt_proxy: []
 
 - name: Create the apt.conf block
   set_fact:
-    b3: "{{ b3 }} + ['{{ item }};']"
+    apt_proxy: "{{ apt_proxy }} + ['{{ item }};']"
   with_items:
     - Acquire::http::proxy "http://{{ proxy.address }}:{{ proxy.port }}/"
     - Acquire::ftp::proxy "ftp://{{ proxy.address }}:{{ proxy.port }}/"
@@ -14,7 +15,7 @@
 - name: Update /etc/apt/apt.conf.d/80proxy
   blockinfile:
     dest: /etc/apt/apt.conf.d/80proxy
-    block: "{{ b3 | join('\n') }}"
+    block: "{{ apt_proxy | join('\n') }}"
     insertafter: EOF
     marker: "# {mark} ANSIBLE MANAGED BLOCK - PROXY"
     create: true
