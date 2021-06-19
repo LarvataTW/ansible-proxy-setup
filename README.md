@@ -1,21 +1,18 @@
 # Ansible Role - proxy-setup
 
-Configure a system to use a Proxy Server
-
-Available on Ansible Galaxy: [pgkehle.proxy-setup](https://galaxy.ansible.com/pgkehle/proxy-setup)
+Configure a system to use a Proxy Server.   
+Using `--skip-tags` to determine which kind of setup tasks should skip.
 
 ## Examples
 
 ```YAML
+# ansible-playbook --skip-tags=apt,git,yarn,docker ...
 
-  - hosts: all
-    vars:
-      proxy:
-        addr: my.fqdn
-        port: 3128
-
-    roles:
-      - pgkehle.proxy-setup
+- hosts: all
+  vars:
+    proxy:
+      addr: my.fqdn
+      port: 3128
 ```
 
 ## Linting
@@ -29,7 +26,7 @@ ansible-lint .
 
 MIT
 
-## Author Information
+## Original Author Information
 
 Paul Kehle  
 @pgkehle ([twitter](https://twitter.com/pgkehle), [github](https://github.com/pgkehle), [linkedin](https://www.linkedin.com/in/pgkehle))
