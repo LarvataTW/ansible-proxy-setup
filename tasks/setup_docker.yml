@@ -1,6 +1,7 @@
 ---
 
 - name: Setup Proxy for Docker Service
+  become: true
   block:
 
     - name: create docker dropin directory
@@ -22,7 +23,3 @@
 
     - name: check if proxy setup for docker service
       shell: "systemctl show --property=Environment docker"
-
-  become: true
-  when:
-    - setup_docker

@@ -5,14 +5,12 @@
     name: http.proxy
     scope: global
     value: "http://{{ proxy.address }}:{{ proxy.port }}"
-  when: setup_git
 
 - name: Add https proxy to git config
   git_config:
     name: https.proxy
     scope: global
     value: "http://{{ proxy.address }}:{{ proxy.port }}"
-  when: setup_git
 
 - name: Set git to https
   git_config:
